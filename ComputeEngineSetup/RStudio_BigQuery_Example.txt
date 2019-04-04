@@ -1,0 +1,71 @@
+# Useful resource to get going : https://cloud.google.com/blog/products/gcp/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery
+
+# ------------------------------------------------------------------------------------------------
+# Required configuration
+# ------------------------------------------------------------------------------------------------
+
+# put your project ID here
+project <- "datatonic-uk-sandbox"
+
+# ------------------------------------------------------------------------------------------------
+# install the BigQuery package
+# ------------------------------------------------------------------------------------------------
+
+# only need to install packages into the environment once
+# you can check installed packages by entering the following commands in the Console
+  # ip = as.data.frame(installed.packages()[,c(1,3:4)])
+  # ip = ip[is.na(ip$Priority),1:2,drop=FALSE]
+  # ip
+
+install.packages("readr")
+install.packages("devtools")
+
+# load required packages in session
+require('readr')
+require('devtools')
+
+# install bigquery library
+# installing from development as contains Legacy/StandardSQL flag (unlike one in publish CRAN)
+# to install directly from CRAN use : install.packages("bigrquery")
+devtools::install_github("rstats-db/bigrquery")
+require('bigrquery')
+
+# ------------------------------------------------------------------------------------------------
+# Run BigQuery SQL statement & return dataframe
+# ------------------------------------------------------------------------------------------------
+
+# Example query using public dataset of GA data
+sql <- "
+      SELECT
+      date,
+      SUM(totals.totalTransactionRevenue)/1000000 AS revenue,
+      SUM(totals.transactions) AS transactions,
+      COUNT(DISTINCT fullVisitorId) AS users,
+      SUM(totals.visits) AS sessions,
+      SUM(totals.pageviews) AS pageviews,
+      SUM(totals.bounces) AS bounces
+      FROM `bigquery-public-data.google_analytics_sample.ga_sessions_*`
+      WHERE _TABLE_SUFFIX BETWEEN '20170101' AND '20170801'
+      GROUP BY date ORDER BY date ASC
+      "
+# Execute the query and store the result
+# Note: when first executing this command, you will be prompted for authentication (in the console).
+  # 1. To use you user credentials, type 'Yes' and a new browser page will open.
+  # 2. Authenticate with your registered account for the project
+  # 3. Copy the generated authentication key and paste into the console + Enter
+  # 4. Authentication done. Re-run the command below and voila!!!
+
+query_result <- query_exec( sql , project = project , use_legacy_sql = FALSE)
+
+# convert to dataframe
+results_dataframe <- data.frame(query_result)
+
+# print head
+head(results_dataframe)
+
+# ------------------------------------------------------------------------------------------------
+# Plot results
+# ------------------------------------------------------------------------------------------------
+
+# Plot the data for visual comparison later
+barplot(dataframe$revenue , main="Revenue By Date", names.arg=dataframe$date)
