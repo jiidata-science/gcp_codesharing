@@ -1,4 +1,6 @@
 # Useful resource to get going : https://cloud.google.com/blog/products/gcp/google-cloud-platform-for-data-scientists-using-r-with-google-bigquery
+# http://grantmcdermott.com/2017/05/30/rstudio-server-compute-engine/
+# https://yuhuisdatascienceblog.blogspot.com/2017/07/setting-up-r-studio-server-on-google.html
 
 # ------------------------------------------------------------------------------------------------
 # Required configuration
