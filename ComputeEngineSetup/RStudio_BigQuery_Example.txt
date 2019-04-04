@@ -70,4 +70,4 @@ head(results_dataframe)
 # ------------------------------------------------------------------------------------------------
 
 # Plot the data for visual comparison later
-barplot(dataframe$revenue , main="Revenue By Date", names.arg=dataframe$date)
+barplot(results_dataframe$revenue , main="Revenue By Date", names.arg=results_dataframe$date)
