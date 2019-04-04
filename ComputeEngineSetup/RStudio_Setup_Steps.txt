@@ -23,7 +23,7 @@ Other useful links / tips :
 # ----------------------------------------------------------------------
 
 # set these variables for your session
-project_id=datatonic-uk-sandbox # id for target GCP project
+project_id=<project_id> # id for target GCP project
 processing_region=europe-west4 # processing region
 processing_zone=europe-west4-a # processing zone
 vm_name=rstudio-test-2
